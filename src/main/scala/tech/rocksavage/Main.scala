@@ -5,6 +5,7 @@ import chisel3._
 import java.io.File
 import tech.rocksavage.args.Conf
 import tech.rocksavage.chiselware.addrdecode.AddrDecode
+import tech.rocksavage.synth.Synth.{genVerilogFromModuleName, synthesizeFromModuleName}
 import tech.rocksavage.synth.{Synth, SynthConfig, SynthResult}
 
 import scala.sys.exit
@@ -14,7 +15,7 @@ object Main {
     val conf = new Conf(args_array)
     conf.subcommand match {
       case Some(conf.verilog) => {
-        val verilogString = genVerilog(conf.verilog.module())
+        val verilogString = genVerilogFromModuleName(conf.verilog.module())
         conf.verilog.mode() match {
           case "print" => {
             println(verilogString)
@@ -42,7 +43,7 @@ object Main {
           conf.synth.techlib(),
           synthCommands
         )
-        val synth = synthesize(synthConfig, conf.synth.module())
+        val synth = synthesizeFromModuleName(synthConfig, conf.synth.module())
         println(synth.getStdout)
         println(synth.getSynthString)
       }
@@ -50,39 +51,6 @@ object Main {
         println("No subcommand given")
       }
     }
-  }
-
-  def genVerilog(moduleName: String, params: Any*): String = {
-    val clazz = Class.forName(moduleName).asSubclass(classOf[RawModule])
-    val constructors = clazz.getConstructors
-    var verilog = ""
-    for (c <- constructors) {
-      try {
-        verilog = getVerilogString(c.newInstance(params: _*).asInstanceOf[RawModule])
-      } catch {
-        case e: java.lang.IllegalArgumentException => {
-          println("Constructor " + c + " failed: " + e)
-        }
-      }
-    }
-    verilog
-  }
-
-  def synthesize(synthConfig: SynthConfig, moduleName: String, params: Any*): SynthResult = {
-    val clazz = Class.forName(moduleName).asSubclass(classOf[RawModule])
-    val constructors = clazz.getConstructors
-    val className = clazz.getName.split('.').last
-    var verilog = ""
-    for (c <- constructors) {
-      try {
-        verilog = getVerilogString(c.newInstance(params: _*).asInstanceOf[RawModule])
-      } catch {
-        case e: java.lang.IllegalArgumentException => {
-          println("Constructor " + c + " failed: " + e)
-        }
-      }
-    }
-    Synth.synthesize(className, verilog, synthConfig)
   }
 }
 
