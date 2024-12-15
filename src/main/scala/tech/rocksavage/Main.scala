@@ -4,9 +4,7 @@ import chisel3._
 
 import java.io.File
 import tech.rocksavage.args.Conf
-import tech.rocksavage.chiselware.addrdecode.AddrDecode
 import tech.rocksavage.synth.Synth.{genVerilogFromModuleName, synthesizeFromModuleName}
-import tech.rocksavage.synth.{Synth, SynthConfig, SynthResult}
 
 import scala.sys.exit
 

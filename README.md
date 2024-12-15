@@ -2,6 +2,10 @@
 
 A highly configurable Address Decoder written in Chisel3.
 
-## TODO
+# Guide
 
-- [ ] Add more scaladoc
+## Update Dependencies
+
+```bash
+sbt dependencyUpdates
+```

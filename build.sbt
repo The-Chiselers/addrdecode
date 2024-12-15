@@ -30,7 +30,7 @@ lazy val root = (project in file("."))
       "org.chipsalliance" % "chisel-plugin" % chiselVersion cross CrossVersion.full
     )
   ).dependsOn(synth)
-  lazy val synth = RootProject(uri("https://github.com/The-Chiselers/synth.git"))
+  lazy val synth = RootProject(uri("https://github.com/The-Chiselers/synth.git#main"))
 
 // Scala coverage settings
 coverageDataDir            := target.value / "../generated/scalaCoverage"
