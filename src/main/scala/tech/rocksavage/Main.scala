@@ -9,8 +9,8 @@ import tech.rocksavage.synth.Synth.{genVerilogFromModuleName, synthesizeFromModu
 import scala.sys.exit
 
 object Main {
-  def main(args_array: Array[String]) {
-    val conf = new Conf(args_array)
+  def main(args_array: Array[String]): Unit = {
+    val conf = new Conf(args_array.toIndexedSeq)
     conf.subcommand match {
       case Some(conf.verilog) => {
         val verilogString = genVerilogFromModuleName(conf.verilog.module())

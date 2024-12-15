@@ -5,7 +5,7 @@ ThisBuild / version          := "0.1.0"
 ThisBuild / organization     := "tech.rocksavage"
 ThisBuild / organizationName := "Rocksavage Technology"
 
-Test / parallelExecution := false
+//Test / parallelExecution := false
 
 val chiselVersion   = "6.6.0"
 val scalafmtVersion = "2.5.0"
