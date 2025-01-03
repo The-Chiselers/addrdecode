@@ -12,7 +12,9 @@ package tech.rocksavage.chiselware.addrdecode
   * @param addressWidth
   *   specifies the width of the address bus
   * @param memorySizes
-  *   specifies the size of each memory range
+  *   specifies the size of each memory range,
+  *   note that this is the total number of addresses needed for each space,
+  *   **NOT** the number of bits, bytes, ... for each space
   * @author
   *   Warren Savage
   * @version 1.0
