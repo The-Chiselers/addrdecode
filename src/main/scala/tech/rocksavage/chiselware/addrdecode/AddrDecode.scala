@@ -36,7 +36,7 @@ class AddrDecode(
   // ###################
 
   val lengthSel: Int          = params.memorySizes.length
-  var ranges: Seq[(Int, Int)] = Seq()
+  var ranges: List[(Int, Int)] = List()
   for (i <- 0 until lengthSel) {
     if (i == 0) {
       ranges = ranges :+ (0, params.memorySizes(i) - 1)
@@ -83,7 +83,7 @@ class AddrDecode(
     *   A vector of booleans representing the selected range
     */
   def getSelect(
-      addrRanges: Seq[(Int, Int)],
+      addrRanges: List[(Int, Int)],
       inputAddr: UInt
   ): Vec[Bool] = {
     // declare sel
@@ -118,7 +118,7 @@ class AddrDecode(
     */
 
   def getAddrOut(
-      addrRanges: Seq[(Int, Int)],
+      addrRanges: List[(Int, Int)],
       inputAddr: UInt
   ): UInt = {
     val addrOut = Wire(UInt(params.addressWidth.W))
@@ -144,7 +144,7 @@ class AddrDecode(
     *   A boolean value indicating if the address is in error
     */
   def addrIsError(
-      rangeAddr: Seq[(Int, Int)],
+      rangeAddr: List[(Int, Int)],
       inputAddr: UInt
   ): Bool = {
     val isErr = Wire(Bool())
@@ -174,7 +174,7 @@ class AddrDecode(
     */
 
   def getErrorAddress(
-      addrRanges: Seq[(Int, Int)],
+      addrRanges: List[(Int, Int)],
       inputAddr: UInt,
       offsetAddr: UInt
   ): UInt = {
