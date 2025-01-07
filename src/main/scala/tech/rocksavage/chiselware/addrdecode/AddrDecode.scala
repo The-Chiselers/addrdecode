@@ -20,8 +20,7 @@ import tech.rocksavage.synth.{Synth, SynthConfig, SynthResult}
 class AddrDecode(
   params: AddrDecodeParams,
   formal: Boolean = false
-) extends Module
-    with Addressable {
+) extends Module {
 
   // ###################
   // Default Constructor
