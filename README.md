@@ -66,7 +66,7 @@ val addrDecode = Module(new AddrDecode(addrDecodeParams, formal = true))
 
 The following example demonstrates how to use the `AddrDecode` module in a timer design with an APB interface.
 
-As a side note, AddressDecode does not program registers, it just gives the address of what should be programmed. The actual programming and initialization is left to the user, this is shown below
+As a side note, AddressDecode does not program registers, it just gives the address of what should be programmed. The actual programming and initialization is left to the user, this is shown below where [RegisterMap](https://github.com/The-Chiselers/registermap) handles the reads and writes instead.
 
 ```scala
 // (c) 2024 Rocksavage Technology, Inc.
