@@ -1,3 +1,72 @@
+# AddrDecode Module
+
+## Overview
+
+The `AddrDecode` module is a hardware address decoder designed to simplify the process of decoding memory addresses into specific ranges. It is particularly useful in systems where memory-mapped I/O or multiple memory regions need to be managed efficiently. The module is implemented in Chisel, a hardware design language, and provides a flexible and configurable way to handle address decoding.
+
+## Features
+
+- **Configurable Address Ranges**: Define multiple memory ranges with customizable sizes.
+- **Error Handling**: Detect and handle out-of-range addresses with error codes.
+- **Formal Verification Support**: Enable formal verification to ensure correctness of address decoding logic.
+- **Integration with APB**: Seamlessly integrate with APB (Advanced Peripheral Bus) interfaces for memory-mapped I/O.
+
+## Usage
+
+### Defining Address Ranges
+
+To define address ranges, create an instance of `AddrDecodeParams` with the desired data width, address width, and memory sizes. The `memorySizes` parameter specifies the size of each memory range.
+
+```scala
+val addrDecodeParams = AddrDecodeParams(
+  dataWidth = 32,
+  addressWidth = 32,
+  memorySizes = List(1024, 2048, 4096) // Define three memory ranges
+)
+```
+
+### Instantiating the AddrDecode Module
+
+Instantiate the `AddrDecode` module with the defined parameters. The module will automatically calculate the address ranges and handle address decoding.
+
+```scala
+val addrDecode = Module(new AddrDecode(addrDecodeParams))
+```
+
+### Connecting Inputs and Outputs
+
+Connect the address, address offset, enable signal, and select input to the `AddrDecode` module. The module will output the selected range, decoded address, error code, and error address.
+
+```scala
+addrDecode.io.addr := io.apb.PADDR
+addrDecode.io.addrOffset := 0.U
+addrDecode.io.en := true.B
+addrDecode.io.selInput := true.B
+```
+
+### Handling Errors
+
+The `AddrDecode` module provides an error code and error address output to handle out-of-range addresses. Use these outputs to manage error conditions in your design.
+
+```scala
+when(addrDecode.io.errorCode === AddrDecodeError.AddressOutOfRange) {
+  // Handle out-of-range address error
+}
+```
+
+### Formal Verification
+
+Enable formal verification by setting the `formal` parameter to `true` when instantiating the `AddrDecode` module. This will add assertions to verify the correctness of the address decoding logic.
+
+```scala
+val addrDecode = Module(new AddrDecode(addrDecodeParams, formal = true))
+```
+
+## Example
+
+The following example demonstrates how to use the `AddrDecode` module in a timer design with an APB interface.
+
+```scala
 class Timer(val timerParams: TimerParams) extends Module {
   val dataWidth = timerParams.dataWidth
   val addressWidth = timerParams.addressWidth
@@ -72,3 +141,8 @@ class Timer(val timerParams: TimerParams) extends Module {
     io.interrupt.interrupt := TimerInterruptEnum.MaxReached
   }
 }
+```
+
+## Conclusion
+
+The `AddrDecode` module is a powerful tool for managing address decoding in Chisel-based hardware designs. It simplifies the process of defining and handling multiple memory ranges, provides robust error handling, and supports formal verification for ensuring correctness. The module integrates seamlessly with APB interfaces, making it an essential component for memory-mapped I/O operations in complex systems.
