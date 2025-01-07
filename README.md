@@ -66,75 +66,96 @@ val addrDecode = Module(new AddrDecode(addrDecodeParams, formal = true))
 
 The following example demonstrates how to use the `AddrDecode` module in a timer design with an APB interface.
 
+As a side note, AddressDecode does not program registers, it just gives the address of what should be programmed. The actual programming and initialization is left to the user, this is shown below where [RegisterMap](https://github.com/The-Chiselers/registermap) handles the reads and writes instead.
+
 ```scala
+// (c) 2024 Rocksavage Technology, Inc.
+// This code is licensed under the Apache Software License 2.0 (see LICENSE.MD)
+package tech.rocksavage.chiselware.timer
+
+import chisel3._
+import chisel3.util._
+import tech.rocksavage.chiselware.apb.{ApbBundle, ApbParams}
+import tech.rocksavage.chiselware.addrdecode.{AddrDecode, AddrDecodeError, AddrDecodeParams}
+import tech.rocksavage.chiselware.timer.bundle.{TimerBundle, TimerInterruptBundle, TimerInterruptEnum, TimerOutputBundle}
+import tech.rocksavage.chiselware.timer.param.TimerParams
+import tech.rocksavage.chiselware.addressable.RegisterMap
+import tech.rocksavage.chiselware.timer.TimerInner
+
 class Timer(val timerParams: TimerParams) extends Module {
+  // Default Constructor
+  def this() = this(TimerParams())
   val dataWidth = timerParams.dataWidth
   val addressWidth = timerParams.addressWidth
 
+  // Input/Output bundle for the Timer module
   val io = IO(new Bundle {
     val apb = new ApbBundle(ApbParams(dataWidth, addressWidth))
     val timerOutput = new TimerOutputBundle(timerParams)
     val interrupt = new TimerInterruptBundle
   })
 
-  // Define memory sizes for the timer registers
-  val memorySizes = List(1, 32, 32, 32, 32, 1, 2) // Example sizes for en, prescaler, maxCount, etc.
+  // Create a RegisterMap to manage the addressable registers
+  val registerMap = new RegisterMap(dataWidth, addressWidth)
 
-  // Create AddrDecodeParams
-  val addrDecodeParams = AddrDecodeParams(
-    dataWidth = dataWidth,
-    addressWidth = addressWidth,
-    memorySizes = memorySizes
-  )
+  // Now define your registers without the macro
+  val en: Bool = RegInit(false.B)
+  registerMap.createAddressableRegister(en, "en")
 
-  // Instantiate the AddrDecode module
+  val prescaler: UInt = RegInit(0.U(timerParams.countWidth.W))
+  registerMap.createAddressableRegister(prescaler, "prescaler")
+
+  val maxCount: UInt = RegInit(0.U(timerParams.countWidth.W))
+  registerMap.createAddressableRegister(maxCount, "maxCount")
+
+  val pwmCeiling: UInt = RegInit(0.U(timerParams.countWidth.W))
+  registerMap.createAddressableRegister(pwmCeiling, "pwmCeiling")
+
+  val setCountValue: UInt = RegInit(0.U(timerParams.countWidth.W))
+  registerMap.createAddressableRegister(setCountValue, "setCountValue")
+
+  val setCount: Bool = RegInit(false.B)
+  registerMap.createAddressableRegister(setCount, "setCount")
+
+  // Generate AddrDecode
+  val addrDecodeParams = registerMap.getAddrDecodeParams
   val addrDecode = Module(new AddrDecode(addrDecodeParams))
   addrDecode.io.addr := io.apb.PADDR
   addrDecode.io.addrOffset := 0.U
   addrDecode.io.en := true.B
   addrDecode.io.selInput := true.B
 
-  // Instantiate the APB interface
-  val apbInterface = Module(new ApbInterface(ApbParams(dataWidth, addressWidth)))
-  apbInterface.io.apb <> io.apb
+  io.apb.PREADY := (io.apb.PENABLE && io.apb.PSEL)
+  io.apb.PSLVERR := addrDecode.io.errorCode === AddrDecodeError.AddressOutOfRange
 
-  // Connect the address decoder to the APB interface
-  apbInterface.io.mem.addr := addrDecode.io.addrOut
-  apbInterface.io.mem.wdata := io.apb.PWDATA
-  apbInterface.io.mem.read := !io.apb.PWRITE
-  apbInterface.io.mem.write := io.apb.PWRITE
-
-  // Handle writes to the timer registers
-  when(apbInterface.io.mem.write) {
-    for (i <0 until memorySizes.sum) {
-      when(addrDecode.io.sel(i)) {
-        // Write to the appropriate register
+  io.apb.PRDATA := 0.U
+  // Control Register Read/Write
+  when(io.apb.PSEL && io.apb.PENABLE) {
+    when(io.apb.PWRITE) {
+      for (reg <- registerMap.getRegisters) {
+        when(addrDecode.io.sel(reg.id)) {
+          reg.writeCallback(addrDecode.io.addrOffset, io.apb.PWDATA)
+        }
+      }
+    }.otherwise {
+      for (reg <- registerMap.getRegisters) {
+        when(addrDecode.io.sel(reg.id)) {
+          io.apb.PRDATA := reg.readCallback(addrDecode.io.addrOffset)
+        }
       }
     }
   }
 
-  // Handle reads from the timer registers
-  when(apbInterface.io.mem.read) {
-    apbInterface.io.mem.rdata := 0.U
-    for (i <0 until memorySizes.sum) {
-      when(addrDecode.io.sel(i)) {
-        // Read from the appropriate register
-      }
-    }
-  }
-
-  // Handle APB error conditions
-  when(addrDecode.io.errorCode === AddrDecodeError.AddressOutOfRange) {
-    apbInterface.io.apb.PSLVERR := true.B
-  }.otherwise {
-    apbInterface.io.apb.PSLVERR := false.B
-  }
-
-  // Instantiate the timer logic
+  // Instantiate the TimerInner module
   val timerInner = Module(new TimerInner(timerParams))
-  // Connect timer inputs and outputs
+  timerInner.io.timerInputBundle.en := en // Add this line
+  timerInner.io.timerInputBundle.setCount := setCount
+  timerInner.io.timerInputBundle.prescaler := prescaler
+  timerInner.io.timerInputBundle.maxCount := maxCount
+  timerInner.io.timerInputBundle.pwmCeiling := pwmCeiling
+  timerInner.io.timerInputBundle.setCountValue := setCountValue
+  // Connect the TimerInner outputs to the top-level outputs
   io.timerOutput <> timerInner.io.timerOutputBundle
-
   // Handle interrupts
   io.interrupt.interrupt := TimerInterruptEnum.None
   when(timerInner.io.timerOutputBundle.maxReached) {
