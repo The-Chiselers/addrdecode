@@ -4,7 +4,6 @@ package tech.rocksavage.chiselware.addrdecode
 
 import chisel3._
 import circt.stage.ChiselStage
-import tech.rocksavage.synth.{Synth, SynthConfig, SynthResult}
 
 /** An address decoder that can be used to decode addresses into a set of ranges
   *
