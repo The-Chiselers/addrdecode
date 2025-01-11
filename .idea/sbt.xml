@@ -7,8 +7,6 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
-            <option value="$USER_HOME$/.sbt/1.0/staging/20590224f33fad500c90/synth" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/20590224f33fad500c90/synth/project" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/project" />
           </set>

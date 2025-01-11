@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/20590224f33fad500c90.synth.iml" filepath="$PROJECT_DIR$/.idea/modules/20590224f33fad500c90.synth.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/20590224f33fad500c90.synth.synth-build.iml" filepath="$PROJECT_DIR$/.idea/modules/20590224f33fad500c90.synth.synth-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/addrdecode.iml" filepath="$PROJECT_DIR$/.idea/modules/addrdecode.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/addrdecode.addrdecode-build.iml" filepath="$PROJECT_DIR$/.idea/modules/addrdecode.addrdecode-build.iml" />
     </modules>
