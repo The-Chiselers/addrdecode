@@ -4,14 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/addrdecode.iml" filepath="$PROJECT_DIR$/.idea/modules/addrdecode.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/addrdecode.addrdecode-build.iml" filepath="$PROJECT_DIR$/.idea/modules/addrdecode.addrdecode-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chisel_module_runner.iml" filepath="$PROJECT_DIR$/.idea/modules/chisel_module_runner.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/chisel_module_runner.chisel_module_runner-build.iml" filepath="$PROJECT_DIR$/.idea/modules/chisel_module_runner.chisel_module_runner-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stdlib.iml" filepath="$PROJECT_DIR$/.idea/modules/stdlib.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stdlib.stdlib-build.iml" filepath="$PROJECT_DIR$/.idea/modules/stdlib.stdlib-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stdlib~1.iml" filepath="$PROJECT_DIR$/.idea/modules/stdlib~1.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/stdlib~1.stdlib~1-build.iml" filepath="$PROJECT_DIR$/.idea/modules/stdlib~1.stdlib~1-build.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/synth.iml" filepath="$PROJECT_DIR$/.idea/modules/synth.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/synth.synth-build.iml" filepath="$PROJECT_DIR$/.idea/modules/synth.synth-build.iml" />
     </modules>
   </component>
 </project>
