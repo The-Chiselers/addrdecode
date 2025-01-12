@@ -24,7 +24,7 @@ clean:
 # Generate verilog from the Chisel code
 verilog:
 	@echo Generating Verilog...
-	$(SBT) "runMain tech.rocksavage.Main verilog --mode print --module tech.rocksavage.chiselware.addrdecode.AddrDecode"
+	$(SBT) "runMain tech.rocksavage.Main verilog --mode print --module tech.rocksavage.chiselware.addrdecode.AddrDecode --config-class tech.rocksavage.chiselware.addrdecode.AddrDecodeConfig"
 
 # Run the tests
 test:
@@ -34,4 +34,4 @@ test:
 # Synthesize the design
 synth: verilog
 	@echo Synthesizing...
-	@$(SBT) "runMain tech.rocksavage.Main synthesis --module tech.rocksavage.chiselware.addrdecode.AddrDecode --techlib synth/stdcells.lib"
+	@$(SBT) "runMain tech.rocksavage.Main synthesis --module tech.rocksavage.chiselware.addrdecode.AddrDecode --techlib synth/stdcells.lib --config-class tech.rocksavage.chiselware.addrdecode.AddrDecodeConfig"

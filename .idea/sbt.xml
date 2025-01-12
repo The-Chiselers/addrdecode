@@ -7,14 +7,12 @@
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
+            <option value="$USER_HOME$/.sbt/1.0/staging/20590224f33fad500c90/synth" />
+            <option value="$USER_HOME$/.sbt/1.0/staging/20590224f33fad500c90/synth/project" />
             <option value="$USER_HOME$/.sbt/1.0/staging/48a50686a413a20796b4/stdlib" />
             <option value="$USER_HOME$/.sbt/1.0/staging/48a50686a413a20796b4/stdlib/project" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/4aeaf299b4b5cddc7729/stdlib" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/4aeaf299b4b5cddc7729/stdlib/project" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/4f5b96f37ef378c61dc1/synth" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/4f5b96f37ef378c61dc1/synth/project" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/85328f966cfc8198da52/chisel_module_runner" />
-            <option value="$USER_HOME$/.sbt/1.0/staging/85328f966cfc8198da52/chisel_module_runner/project" />
+            <option value="$USER_HOME$/.sbt/1.0/staging/da04db603991cd65594d/chisel_module_runner" />
+            <option value="$USER_HOME$/.sbt/1.0/staging/da04db603991cd65594d/chisel_module_runner/project" />
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/project" />
           </set>

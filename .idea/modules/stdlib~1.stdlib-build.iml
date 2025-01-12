@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<module external.linked.project.id="stdlib~1-build" external.linked.project.path="$USER_HOME$/.sbt/1.0/staging/48a50686a413a20796b4/stdlib/project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" external.system.module.type="nestedProject" type="SBT_MODULE" version="4">
+<module external.linked.project.id="stdlib-build" external.linked.project.path="$USER_HOME$/.sbt/1.0/staging/48a50686a413a20796b4/stdlib/project" external.root.project.path="$MODULE_DIR$/../.." external.system.id="SBT" external.system.module.type="nestedProject" type="SBT_MODULE" version="4">
   <component name="DisplayModuleName">
-    <option name="name" value="stdlib~1-build" />
+    <option name="name" value="stdlib-build" />
   </component>
   <component name="NewModuleRootManager">
     <output url="file://$USER_HOME$/.sbt/1.0/staging/48a50686a413a20796b4/stdlib/project/target/idea-classes" />
