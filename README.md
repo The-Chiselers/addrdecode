@@ -1,5 +1,16 @@
 # AddrDecode Module
 
+## Setup
+
+### Git 
+
+```bash
+git clone [url].git
+git submodule update --init --recursive
+touch .git-blame-ignore-revs
+git config blame.ignoreRevsFile .git-blame-ignore-revs
+``` 
+
 ## Overview
 
 The `AddrDecode` module is a hardware address decoder designed to simplify the process of decoding memory addresses into specific ranges. It is particularly useful in systems where memory-mapped I/O or multiple memory regions need to be managed efficiently. The module is implemented in Chisel, a hardware design language, and provides a flexible and configurable way to handle address decoding.
