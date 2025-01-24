@@ -3,6 +3,8 @@ MAKEFLAGS += --silent
 # Define SBT variable
 SBT = sbt
 
+.PHONY: clean docs update verilog synth sta test
+
 # Default target
 default: verilog
 
