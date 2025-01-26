@@ -3,7 +3,7 @@ MAKEFLAGS += --silent
 # Define SBT variable
 SBT = sbt
 
-.PHONY: clean docs update verilog synth sta test
+.PHONY: clean update docs update verilog synth sta test
 
 # Default target
 default: verilog
@@ -22,6 +22,10 @@ clean:
 	find . -type f -name "*.fls" -delete
 	find . -type f -name "*.synctex.gz" -delete
 	find . -type f -name "*.pdf" -delete
+
+update:
+	@echo Updating...
+	sbt clean update
 
 # Generate verilog from the Chisel code
 verilog:
