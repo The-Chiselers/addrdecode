@@ -33,7 +33,7 @@ class AddrDecode(
     val totalMemorySize: Int = params.memorySizes.sum
     val numBitsNeeded        = log2Ceil(totalMemorySize)
 
-    require(ranges.nonEmpty, "At least one range must be provided")
+    var ranges: List[(Int, Int)] = List()
     for (i <- 0 until lengthSel) {
         if (i == 0) {
             ranges = ranges :+ (0, params.memorySizes(i) - 1)
@@ -44,6 +44,9 @@ class AddrDecode(
             )
         }
     }
+
+    require(ranges.nonEmpty, "At least one range must be provided")
+
     val io = IO(new Bundle {
         val addr       = Input(UInt(params.addressWidth.W))
         val addrOffset = Input(UInt(params.addressWidth.W))
@@ -69,7 +72,6 @@ class AddrDecode(
     )
     private val addr             = addrMasked - io.addrOffset
     private val en               = io.en
-    var ranges: List[(Int, Int)] = List()
 
     def this() = {
         this(AddrDecodeParams(), false)
@@ -188,8 +190,9 @@ class AddrDecode(
 
     def getErrorAddress(
         addrRanges: List[(Int, Int)],
-        inputAddr: UInt,
-        offsetAddr: UInt
+        rawInputAddr: UInt,
+        offsetAddr: UInt,
+        addrMasked: UInt
     ): UInt = {
         val errorAddr = Wire(UInt(params.addressWidth.W))
         errorAddr := 0.U
@@ -198,9 +201,9 @@ class AddrDecode(
         val maxAddr: Int = addrRanges.last._2
 
         when(
-          inputAddr < minAddr.U || inputAddr > maxAddr.U
+            addrMasked < minAddr.U || addrMasked > maxAddr.U
         ) {
-            errorAddr := inputAddr + offsetAddr
+            errorAddr := rawInputAddr + offsetAddr
         }
 
         return errorAddr
@@ -223,7 +226,7 @@ class AddrDecode(
 
         io.sel       := getSelect(ranges, addr)
         io.addrOut   := getAddrOut(ranges, addr)
-        io.errorAddr := getErrorAddress(ranges, addr, io.addrOffset)
+        io.errorAddr := getErrorAddress(ranges, io.addr, io.addrOffset, addrMasked)
     }
 
     // ###################
