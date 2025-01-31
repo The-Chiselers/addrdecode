@@ -12,9 +12,9 @@ package tech.rocksavage.chiselware.addrdecode
   * @param addressWidth
   *   specifies the width of the address bus
   * @param memorySizes
-  *   specifies the size of each memory range,
-  *   note that this is the total number of addresses needed for each space,
-  *   **NOT** the number of bits, bytes, ... for each space
+  *   specifies the size of each memory range, note that this is the total
+  *   number of addresses needed for each space, **NOT** the number of bits,
+  *   bytes, ... for each space
   * @author
   *   Warren Savage
   * @version 1.0
@@ -28,7 +28,7 @@ case class AddrDecodeParams(
     memorySizes: List[Int] = List(32, 32, 32, 32, 32, 32, 32, 32)
 ) {
 
-  require(dataWidth >= 1, "Data Width must be greater than or equal 1")
-  require(addressWidth >= 1, "Address Width must be greater than or equal 1")
+    require(dataWidth >= 1, "Data Width must be greater than or equal 1")
+    require(addressWidth >= 1, "Address Width must be greater than or equal 1")
 
 }

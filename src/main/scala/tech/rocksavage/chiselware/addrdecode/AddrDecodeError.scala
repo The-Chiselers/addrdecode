@@ -5,5 +5,5 @@ package tech.rocksavage.chiselware.addrdecode
 import chisel3._
 
 object AddrDecodeError extends ChiselEnum {
-  val None, AddressOutOfRange = Value
+    val None, AddressOutOfRange = Value
 }

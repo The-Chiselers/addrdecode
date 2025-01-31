@@ -48,10 +48,10 @@ class AddrDecode(
     require(ranges.nonEmpty, "At least one range must be provided")
 
     val io = IO(new Bundle {
-        val addr       = Input(UInt(params.addressWidth.W))
+        val addr = Input(UInt(params.addressWidth.W))
 //        val addrOffset = Input(UInt(params.addressWidth.W))
-        val en         = Input(Bool())
-        val selInput   = Input(Bool())
+        val en       = Input(Bool())
+        val selInput = Input(Bool())
 
         val sel       = Output(Vec(lengthSel, Bool()))
         val addrOut   = Output(UInt(params.addressWidth.W))
@@ -71,8 +71,8 @@ class AddrDecode(
       "Address space is not large enough to hold all ranges"
     )
 //    private val addr             = addrMasked - io.addrOffset
-    private val addr             = addrMasked
-    private val en               = io.en
+    private val addr = addrMasked
+    private val en   = io.en
 
     def this() = {
         this(AddrDecodeParams(), false)
@@ -201,7 +201,7 @@ class AddrDecode(
         val maxAddr: Int = addrRanges.last._2
 
         when(
-            addrMasked < minAddr.U || addrMasked > maxAddr.U
+          addrMasked < minAddr.U || addrMasked > maxAddr.U
         ) {
             errorAddr := rawInputAddr
         }
