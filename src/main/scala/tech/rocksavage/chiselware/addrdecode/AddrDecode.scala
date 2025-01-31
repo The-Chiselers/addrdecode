@@ -49,7 +49,7 @@ class AddrDecode(
 
     val io = IO(new Bundle {
         val addr       = Input(UInt(params.addressWidth.W))
-        val addrOffset = Input(UInt(params.addressWidth.W))
+//        val addrOffset = Input(UInt(params.addressWidth.W))
         val en         = Input(Bool())
         val selInput   = Input(Bool())
 
@@ -70,7 +70,8 @@ class AddrDecode(
       totalMemorySize <= math.pow(2, params.addressWidth),
       "Address space is not large enough to hold all ranges"
     )
-    private val addr             = addrMasked - io.addrOffset
+//    private val addr             = addrMasked - io.addrOffset
+    private val addr             = addrMasked
     private val en               = io.en
 
     def this() = {
@@ -191,7 +192,6 @@ class AddrDecode(
     def getErrorAddress(
         addrRanges: List[(Int, Int)],
         rawInputAddr: UInt,
-        offsetAddr: UInt,
         addrMasked: UInt
     ): UInt = {
         val errorAddr = Wire(UInt(params.addressWidth.W))
@@ -203,10 +203,10 @@ class AddrDecode(
         when(
             addrMasked < minAddr.U || addrMasked > maxAddr.U
         ) {
-            errorAddr := rawInputAddr + offsetAddr
+            errorAddr := rawInputAddr
         }
 
-        return errorAddr
+        errorAddr
     }
 
     io.sel       := VecInit(Seq.fill(lengthSel)(false.B))
@@ -226,7 +226,7 @@ class AddrDecode(
 
         io.sel       := getSelect(ranges, addr)
         io.addrOut   := getAddrOut(ranges, addr)
-        io.errorAddr := getErrorAddress(ranges, io.addr, io.addrOffset, addrMasked)
+        io.errorAddr := getErrorAddress(ranges, io.addr, addrMasked)
     }
 
     // ###################
