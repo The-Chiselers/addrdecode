@@ -32,6 +32,7 @@ class AddrDecode(
     // ###################
     val totalMemorySize: Int = params.memorySizes.sum
     val numBitsNeeded        = log2Ceil(totalMemorySize)
+    val mask                = (1 << numBitsNeeded) - 1
 
     var ranges: List[(Int, Int)] = List()
     for (i <- 0 until lengthSel) {
@@ -60,7 +61,7 @@ class AddrDecode(
     })
 
     val addrMasked = Wire(UInt(params.addressWidth.W))
-    addrMasked := io.addr & (totalMemorySize - 1).U
+    addrMasked := io.addr & mask.U
 
     /** in this section, we take the results from the above functions and assign
       * them to the output ports
