@@ -26,6 +26,8 @@ class AddrDecode(
     // ###################
 
     val lengthSel: Int = params.memorySizes.length
+    val dataWidthWordWidthRatio = params.dataWidth / params.wordWidth
+    val lowerShiftBits = log2Ceil(dataWidthWordWidthRatio)
 
     // ###################
     // Parameter checking & calculation
@@ -33,6 +35,7 @@ class AddrDecode(
     val totalMemorySize: Int = params.memorySizes.sum
     val numBitsNeeded        = log2Ceil(totalMemorySize)
     val mask                = (1 << numBitsNeeded) - 1
+
 
     var ranges: List[(Int, Int)] = List()
     for (i <- 0 until lengthSel) {
@@ -49,7 +52,7 @@ class AddrDecode(
     require(ranges.nonEmpty, "At least one range must be provided")
 
     val io = IO(new Bundle {
-        val addr = Input(UInt(params.addressWidth.W))
+        val addrRaw = Input(UInt(params.addressWidth.W))
 //        val addrOffset = Input(UInt(params.addressWidth.W))
         val en       = Input(Bool())
         val selInput = Input(Bool())
@@ -60,8 +63,10 @@ class AddrDecode(
         val errorAddr = Output(UInt(params.addressWidth.W))
     })
 
+    val addrShifted = io.addrRaw >> lowerShiftBits.U
+
     val addrMasked = Wire(UInt(params.addressWidth.W))
-    addrMasked := io.addr & mask.U
+    addrMasked := addrShifted & mask.U
 
     /** in this section, we take the results from the above functions and assign
       * them to the output ports
@@ -227,7 +232,7 @@ class AddrDecode(
 
         io.sel       := getSelect(ranges, addr)
         io.addrOut   := getAddrOut(ranges, addr)
-        io.errorAddr := getErrorAddress(ranges, io.addr, addrMasked)
+        io.errorAddr := getErrorAddress(ranges, io.addrRaw, addrMasked)
     }
 
     // ###################
@@ -281,7 +286,7 @@ class AddrDecode(
                   io.errorCode === AddrDecodeError.AddressOutOfRange,
                   "Invalid error code"
                 )
-                assert(io.errorAddr === io.addr, "Invalid error address")
+                assert(io.errorAddr === io.addrRaw, "Invalid error address")
             }
 
         }

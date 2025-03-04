@@ -25,7 +25,8 @@ package tech.rocksavage.chiselware.addrdecode
 case class AddrDecodeParams(
     dataWidth: Int = 8,
     addressWidth: Int = 8,
-    memorySizes: List[Int] = List(32, 32, 32, 32, 32, 32, 32, 32)
+    memorySizes: List[Int] = List(32, 32, 32, 32, 32, 32, 32, 32),
+    wordWidth: Int = 8
 ) {
 
     require(dataWidth >= 1, "Data Width must be greater than or equal 1")
