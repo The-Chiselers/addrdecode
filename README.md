@@ -1,23 +1,5 @@
 # AddrDecode Module
 
-## Features to Add
-
-- One stop bit vs. two stop bits
-    - Add transitions to FSM so stop acts like idle
-- Fix FSM timing
-  - 
-
-## Setup
-
-### Git
-
-```bash
-git clone [url].git
-git submodule update --init --recursive
-touch .git-blame-ignore-revs
-git config blame.ignoreRevsFile .git-blame-ignore-revs
-``` 
-
 ## Overview
 
 The `AddrDecode` module is a hardware address decoder designed to simplify the process of decoding memory addresses into
